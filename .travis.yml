@@ -1,0 +1,24 @@
+sudo: required
+services: 
+  - docker
+
+before_install:
+  - docker build -t alexnail/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  # - docker run alexnail/react-test npm test -- --coverage
+  - docker run -e CI=true alexnail/react-test npm test
+
+after_success:
+  - docker build -t alexnail/multi-client ./client
+  - docker build -t alexnail/multi-nginx ./nginx
+  - docker build -t alexnail/multi-server ./server
+  - docker build -t alexnail/multi-worker ./worker
+
+  # Log in to the Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push alexnail/multi-client
+  - docker push alexnail/multi-nginx
+  - docker push alexnail/multi-server
+  - docker push alexnail/multi-worker
