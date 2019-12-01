@@ -1,6 +1,6 @@
 {
-    "AWSEBDockerrunVerison": 2,
-    "containerDefinisions" : [
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions" : [
         {
             "name": "client",
             "image": "alexnail/multi-client",
